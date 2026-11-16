@@ -63,6 +63,7 @@ def bin_student_courses(transcript, gen_ed_mapping):
         # call parse_course_records(course), assign to 'record'
         # call get_gen_ed_category(record[code], gen_ed_mapping), assign to 'category'
         # if record['status'] == 'COMPLETED', append (record['code'], record['credits']) tuple to bins[category]
+    # return bins
     # testing detailed in main
     pass
 
@@ -90,6 +91,7 @@ def main():
     # print(parse_course_record("  WR-121z, Composition I, 3, Completed   "))
     # print(parse_course_record("  WR-122z,  Composition II, 3, Incomplete   "))
     # print(parse_course_record("     GSWS-210, Violence Prevention, 4, completed"))
+    # do i need to list expected outcomes for this? expected outcomes are just "the string but a dict now, and cleaner"
 
 
     #   # Step 2 Testing
@@ -98,6 +100,7 @@ def main():
     # test_values = ['MTH-111', 'WR-121Z', 'WR-122Z', 'GSWS-210', 'FAKE-100']
     # for code in test_values: # much faster way to test each variable
     #     print(get_gen_ed_category(code, sample_categories))
+    # expected results, in order: Numerical Literacy, Purposeful Learning, PL again, Creativity+Innovation, Uncategorized
 
 
     #   # Step 3 Testing
@@ -111,14 +114,17 @@ def main():
     # "UNCATEGORIZED": [("CS-210", 2)]
     # }
     # call audit_credits(student_bins)
+    # expected results: CI:6, CE:3, EDI:4, IA:6, NL:8, PL:4, UC:2
 
 
     #   # Step 4 Testing
     # define a sample transcript, 2 courses
     # sample_transcript = [("ART-291", 4), ("ES-200", 2)]
-    # call bin_student_courses(sample_transcript, sample_categories)
+    # call bin_student_courses(sample_transcript, sample_categories) and print the result
+    # expected results: {CI: (ART-291, 4), EDI:("ES-200", 2), other cats empty}
     # then add more courses and call again:
-    # [("ARTH-204", 4), ("CS-200", 2), ("ENG-214", 4), ("ENG-105", 2), ("BI-101", 2), ("WR-123", 4)]
+    # sample_transcript [("ART-291", 4), ("ES-200", 2), ("ARTH-204", 4), ("CS-200", 2), ("ENG-214", 4), ("ENG-105", 2), ("BI-101", 2), ("WR-123", 4)]
+    # ill just check this one against the dictionary when i run it, im too zapped to do it now
 
 
     #   # STEP 5: Final Pipeline Integration & Testing
