@@ -1,63 +1,95 @@
 #   # STEP 1
 def parse_course_record(course_string):
-    '''Takes a string of course data, sanitizes it, and returns the separated values as a dictionary.
-    Arguments:
-    course_string -- string representing a course taken
+    ''' Cleans up course data, splits it into four tokens, and converts the 'credit' token to integer.
 
+    Parameters:
+      course_string (str)
+
+    Returns:
+      course (dict): maps labels (str) to tokens (str, int)
     '''
+
     # break string into a list 'tokens' with the .split method (delimiter: ',')
-    # using a for loop, clean up each item in tokens with .strip and .upper * (make sure to reassign!)
-        # * ask professor whether these want to be formatted a specific way, or just be consistent across entries.
-        #   just putting everything in caps is very convenient for a hypothetical program
-        #   but it does require fully capitalizing the reference dictionary too - don't forget that bit
-        # oh actually is it only the status that needs standardized? does this program assume the rest is computer-entered or smth?
+    # using a for loop, clean up each item in tokens with .strip and .capitalize * (make sure to reassign!)
+        # standardizing as "capitalize" is best here - course names aren't used or compared & so don't matter
     # convert credits (tokens[2]) into an integer
     # create dictionary 'course' with keys 'code', 'name', 'credit', and 'status'
         # assign the contents of tokens as values, in index order (so 'code':[0], 'name':[1], etc)
     # return course
-    # testing defined in main
+    # testing detailed in main
     pass
 
 
 #   # STEP 2
 def get_gen_ed_category(course_code, gen_ed_mapping):
-    '''Takes a course code and the Gen Ed category map, and returns the category that course belongs to.
-    Arguments:
-    course_code -- string representing the course code
-    gen_ed_mapping -- dict representing each Gen Ed category
+    ''' Finds what Gen Ed category a course belongs to.
 
+    Parameters:
+      course_code (str),
+      gen_ed_mapping (dict):
+        - Keys: category names (str)
+        - Values: list of strings
+
+    Returns:
+      category (str)
     '''
+
     # write a for loop to iterate through the gen_ed_mapping keys
-        # if the course_code is in the values of a key, then return that key
-    #else (loop end, so if the course_code doesn't match any of the categories), return "UNCATEGORIZED"
+        # if the course_code is in the values of a key, assign 'category' with that key
+    #else (loop end, so if the course_code doesn't match any of the categories), assign 'category' with 'Uncategorized'
+    # return category
     # testing detailed in main
     pass
 
 
 #   # STEP 3
 def audit_credits(student_bins):
-    '''takes student_bins and calculates total credits per Gen Ed category.
-    Arguments:
-    student-bins -- dict representing classes the student has taken in each Gen Ed category
+    ''' Calculates total credits per Gen Ed category.
+
+    Parameters:
+      student_bins (dict):
+        - Keys: category name (str),
+        - Values: list of tuples (course_code: str, credits: int)
+
+    Returns:
+      totals (dict): maps category names (str) to total credits (int)
     '''
-    # initialize dict 'credit_totals' with all category keys plus 'UNCATEGORIZED', all with value 0 for now
+    # this docstring is a direct copy of the example in the 11/17 slides. i liked it a lot so im using it as a framework
+
+    # initialize dict 'totals' with all category keys plus 'UNCATEGORIZED', all with value 0 for now
+    totals = {
+    "Creativity and Innovation": 0,
+    "Communication and Expression": 0,
+    "Equity, Diversity, and Inclusion": 0,
+    "Inquiry and Analysis": 0,
+    "Numerical Literacy": 0,
+    "Purposeful Learning": 0,
+    "Uncategorized": 0
+    }
     # nested for loops: outer loop goes through 'key in student_bin'
         # inner loop goes through 'class in student_bin[key]' (to access the tuples)
-        # increment credit_totals[key] by class[1] (credit_totals and student_bin have matching key sets)
-    # return credit_totals
+        # increment credit_totals[key] by class[1] (totals and student_bin have matching key sets)
+    # return totals
     # testing detailed in main
     pass
 
 
 #   # STEP 4
 def bin_student_courses(transcript, gen_ed_mapping):
-    '''Takes a student transcript, sorts completed courses into their Gen Ed categories, and returns a
-    dictionary of category keys and (code, credit) tuples
-    Arguments:
-    transcript -- tuple of (messy) strings
-    gen_ed_mapping -- dict of gen ed categories and the classes that belong to them
-
+    ''' Parses a student transcript and sorts completed courses into their Gen Ed categories.
+    
+    Parameters:
+      transcript (tuple of strings),
+      gen_ed_mapping (dict):
+        - Keys: category names (str)
+        - Values: list of strings
+    
+    Returns:
+      bins (dict): with Gen Ed categories as keys, and lists of (code, credit) tuples for values
+        - Keys: category names (str)
+        - Values: lists of tuples (code: str, credit: int)
     '''
+
     # initialize dictionary 'bins' with empty lists for all categories + "UNCATEGORIZED"
     # loop over transcript - for course in transcript:
         # call parse_course_records(course), assign to 'record'
@@ -73,14 +105,14 @@ def bin_student_courses(transcript, gen_ed_mapping):
 
 # MAIN FUNCTION
 def main():
-    # master dictionary from the lab document, transformed to all caps for compatibility with the parse function:
+    # sample dictionary from the lab document, with course_codes put in title case for compatibility:
     sample_categories = {
-    "CREATIVITY AND INNOVATION": ["ART-133", "ART-291", "ENG-105", "GSWS-210", "MUS-330"],
-    "COMMUNICATION AND EXPRESSION": ["ARTH-204", "ARTH-205", "BA-450", "BI-130", "MUS-311"],
-    "EQUITY, DIVERSITY, AND INCLUSION": ["ART-450", "ENG-214", "ES-220", "GSWS-312","MUS-205"],
-    "INQUIRY AND ANALYSIS": ["GSWS-300", "ES-200", "ENG-280", "BI-101", "COMM-482"],
-    "NUMERICAL LITERACY": ["CS-200", "MTH-111", "CS-346", "STAT-243Z"],
-    "PURPOSEFUL LEARNING": ["WR-121Z","WR-122Z", "WR-123"]
+    "Creativity and Innovation": ["Art-133", "Art-291", "Eng-105", "Gsws-210", "Mus-330"],
+    "Communication and Expression": ["Arth-204", "Arth-205", "Ba-450", "Bi-130", "Mus-311"],
+    "Equity, Diversity, and Inclusion": ["Art-450", "Eng-214", "Es-220", "Gsws-312","Mus-205"],
+    "Inquiry and Analysis": ["Gsws-300", "Es-200", "Eng-280", "Bi-101", "Comm-482"],
+    "Numerical Literacy": ["Cs-200", "Mth-111", "Cs-346", "Stat-243z"],
+    "Purposeful Learning": ["Wr-121z","Wr-122z", "Wr-123"]
     }
     
 
@@ -130,28 +162,27 @@ def main():
     #   # STEP 5: Final Pipeline Integration & Testing
     # define a larger dictionary of courses for 'gen_ed_categories'. (ill add another 4, 5 classes per category? should do for now)
     extended_categories = {
-    "CREATIVITY AND INNOVATION": ["ART-133", "ART-291", "ENG-105", "GSWS-210", "MUS-330",
-                                  "COMM-222", "CS-210", "ES-327", "SPAN-319", "TA-220"],
-    "COMMUNICATION AND EXPRESSION": ["ARTH-204", "ARTH-205", "BA-450", "BI-130", "MUS-311",
-                                     "COMM-214", "COMM-330", "CS-310", "DCIN-200", "EMDA-202"],
-    "EQUITY, DIVERSITY, AND INCLUSION": ["ART-450", "ENG-214", "ES-220", "GSWS-312","MUS-205",
-                                         "BI-468", "CCJ-231", "COMM-200", "GSWS-222", "MUS-206"],
-    "INQUIRY AND ANALYSIS": ["GSWS-300", "ES-200", "ENG-280", "BI-101", "COMM-482",
-                             "ARTH-346", "BA-483", "DCIN-201", "DCIN-362", "EMDA-250"],
-    "NUMERICAL LITERACY": ["CS-200", "MTH-111", "CS-346", "STAT-243Z", "BA-218", "CS-346", "ES-101", "MTH-212"],
-    "PURPOSEFUL LEARNING": ["WR-121Z","WR-122Z", "WR-123"] # oh thats literally all the PL classes
+    "Creativity and Innovation": ["Art-133", "Art-291", "Eng-105", "Gsws-210", "Mus-330",
+                                  "Comm-222", "Cs-210", "Es-327", "Span-319", "Ta-220"],
+    "Communication and Expression": ["Arth-204", "Arth-205", "Ba-450", "Bi-130", "Mus-311",
+                                     "Comm-214", "Comm-330", "Cs-310", "Dcin-200", "Emda-202"],
+    "Equity, Diversity, and Inclusion": ["Art-450", "Eng-214", "Es-220", "Gsws-312","Mus-205",
+                                         "Bi-468", "Ccj-231", "Comm-200", "Gsws-222", "Mus-206"],
+    "Inquiry and Analysis": ["Gsws-300", "Es-200", "Eng-280", "Bi-101", "Comm-482",
+                             "Arth-346", "Ba-483", "Dcin-201", "Dcin-362", "Emda-250"],
+    "Numerical Literacy": ["Cs-200", "Mth-111", "Cs-346", "Stat-243z", "Ba-218", "Cs-346", "Es-101", "Mth-212"],
+    "Purposeful Learning": ["Wr-121z","Wr-122z", "Wr-123"] # oh thats literally all the PL classes
     }
     # define a 'transcript' tuple with messy course strings, including:
-        # at least one completed course for every category plus one that belongs to none of them
-        # at least two completed courses in at least one category
-        # at least one incomplete course
         # im just gonna make them all worth 5 credits for ease of testing. and i dont feel like looking up the class names rn
         # lmk if you want me to test it with actual names when i write the code but imma just name em by their category
-    transcript = (" ART-133, creativity+innovation 1, 5, completed", "eng-105,  creativity+innovation 2, 5, incomplete",
-                  "   BI-130, comm+expression 1, 5, Completed    ", "  ES-220, equ+div+incl 1,  5, completed  ",
-                  "CS-200, numerical literacy 1  , 5, cOMPLETED ", "   DCIN-201, inquiry+analysis 1, 5, COMPLETED",
-                  "WR-121z, purposeful learning 1, completed", "WR-121Z, purposeful learning 2, 5, comPLETed",
+    
+    transcript = (" ART-133, creativity+innovation 1, 4, completed", "eng-105,  creativity+innovation 2, 4, incomplete",
+                  "   BI-130, comm+expression 1, 4, Completed    ", "  ES-220, equ+div+incl 1,  4, completed  ",
+                  "CS-200, numerical literacy 1  , 4, cOMPLETED ", "   DCIN-201, inquiry+analysis 1, 4, COMPLETED",
+                  "WR-121z, purposeful learning 1, 4, Completed", "WR-121Z, purposeful learning 2, 4, comPLETed",
                   "Fake-101, UC, 5, complete") # okay thats one per category plus one that isnt, 2 in PL, and an incomplete in CI
+    
     # call bin_student_courses(trancript, gen_ed_categories) and store the result in student_final_bins
         # print(student_final_bins) to check that it worked right
     # call audit_credits(student_final_bins) and store the result in a variable
