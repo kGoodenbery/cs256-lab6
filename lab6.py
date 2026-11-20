@@ -39,12 +39,19 @@ def get_gen_ed_category(course_code, gen_ed_mapping):
       category (str)
     '''
 
+    # have to initialize category
+    category = ""
     # write a for loop to iterate through the gen_ed_mapping keys
+    for key in gen_ed_mapping:
         # if the course_code is in the values of a key, assign 'category' with that key
-    #else (loop end, so if the course_code doesn't match any of the categories), assign 'category' with 'Uncategorized'
-    # return category
-    # testing detailed in main
-    pass
+        if course_code in gen_ed_mapping[key]:
+            category = key
+    #if category is still unassigned, assign "uncategorized"
+    if category == "":
+        category = 'Uncategorized'
+    
+    return category
+# testing detailed in main
 
 
 #   # STEP 3
@@ -110,33 +117,33 @@ def bin_student_courses(transcript, gen_ed_mapping):
 
 # MAIN FUNCTION
 def main():
-    # sample dictionary from the lab document, with course_codes put in title case for compatibility:
+    # sample dictionary from the lab document, for initial testing of get_gen_ed_category and bin_student_courses
     sample_categories = {
-    "Creativity and Innovation": ["Art-133", "Art-291", "Eng-105", "Gsws-210", "Mus-330"],
-    "Communication and Expression": ["Arth-204", "Arth-205", "Ba-450", "Bi-130", "Mus-311"],
-    "Equity, Diversity, and Inclusion": ["Art-450", "Eng-214", "Es-220", "Gsws-312","Mus-205"],
-    "Inquiry and Analysis": ["Gsws-300", "Es-200", "Eng-280", "Bi-101", "Comm-482"],
-    "Numerical Literacy": ["Cs-200", "Mth-111", "Cs-346", "Stat-243z"],
-    "Purposeful Learning": ["Wr-121z","Wr-122z", "Wr-123"]
+    "Creativity and Innovation": ["ART-133", "ART-291", "ENG-105", "GSWS-210", "MUS-330"],
+    "Communication and Expression": ["ARTH-204", "ARTH-205", "BA-450", "BI-130", "MUS-311"],
+    "Equity, Diversity, and Inclusion": ["ART-450", "ENG-214", "ES-220", "GSWS-312","MUS-205"],
+    "Inquiry and Analysis": ["GSWS-300", "ES-200", "ENG-280", "BI-101", "COMM-482"],
+    "Numerical Literacy": ["CS-200", "MTH-111", "CS-346", "STAT-243Z"],
+    "Purposeful Learning": ["WR-121Z","WR-122Z", "WR-123"]
     }
     
 
     #   # Step 1 Testing
     # using the sample transcript from the doc
     # call parse_course_record() and print the result using each of the strings below as the argument:
-    print(parse_course_record("    MTH-111, Pre-calculus, 4, COMPLETED    "))
-    print(parse_course_record("  WR-121z, Composition I, 3, Completed   "))
-    print(parse_course_record("  WR-122z,  Composition II, 3, Incomplete   "))
-    print(parse_course_record("     GSWS-210, Violence Prevention, 4, completed"))
+    # print(parse_course_record("    MTH-111, Pre-calculus, 4, COMPLETED    "))
+    # print(parse_course_record("  WR-121z, Composition I, 3, Completed   "))
+    # print(parse_course_record("  WR-122z,  Composition II, 3, Incomplete   "))
+    # print(parse_course_record("     GSWS-210, Violence Prevention, 4, completed"))
     # decided to write out expected outcomes in the doc instead of the code
 
 
     #   # Step 2 Testing
     # mapping dictionary from the doc is initialized at the top of main
     # hard-code some test values from the sample transcript, plus one that isn't in the dictionary
-    # test_values = ['MTH-111', 'WR-121Z', 'WR-122Z', 'GSWS-210', 'FAKE-100']
-    # for code in test_values: # much faster way to test each variable
-    #     print(get_gen_ed_category(code, sample_categories))
+    test_values = ['MTH-111', 'WR-121Z', 'WR-122Z', 'GSWS-210', 'MUS-101']
+    for code in test_values: # much faster way to test each variable
+        print(get_gen_ed_category(code, sample_categories))
     # expected results, in order: Numerical Literacy, Purposeful Learning, PL again, Creativity+Innovation, Uncategorized
 
 
@@ -167,16 +174,16 @@ def main():
     #   # STEP 5: Final Pipeline Integration & Testing
     # define a larger dictionary of courses for 'gen_ed_categories'. (ill add another 4, 5 classes per category? should do for now)
     extended_categories = {
-    "Creativity and Innovation": ["Art-133", "Art-291", "Eng-105", "Gsws-210", "Mus-330",
-                                  "Comm-222", "Cs-210", "Es-327", "Span-319", "Ta-220"],
-    "Communication and Expression": ["Arth-204", "Arth-205", "Ba-450", "Bi-130", "Mus-311",
-                                     "Comm-214", "Comm-330", "Cs-310", "Dcin-200", "Emda-202"],
-    "Equity, Diversity, and Inclusion": ["Art-450", "Eng-214", "Es-220", "Gsws-312","Mus-205",
-                                         "Bi-468", "Ccj-231", "Comm-200", "Gsws-222", "Mus-206"],
-    "Inquiry and Analysis": ["Gsws-300", "Es-200", "Eng-280", "Bi-101", "Comm-482",
-                             "Arth-346", "Ba-483", "Dcin-201", "Dcin-362", "Emda-250"],
-    "Numerical Literacy": ["Cs-200", "Mth-111", "Cs-346", "Stat-243z", "Ba-218", "Cs-346", "Es-101", "Mth-212"],
-    "Purposeful Learning": ["Wr-121z","Wr-122z", "Wr-123"] # oh thats literally all the PL classes
+    "Creativity and Innovation": ["ART-133", "ART-291", "ENG-105", "GSWS-210", "MUS-330",
+                                  "COMM-222", "CS-210", "ES-327", "SPAN-319", "TA-220"],
+    "Communication and Expression": ["ARTH-204", "ARTH-205", "BA-450", "BI-130", "MUS-311",
+                                     "COMM-214", "COMM-330", "CS-310", "DCIN-200", "EMDA-202"],
+    "Equity, Diversity, and Inclusion": ["ART-450", "ENG-214", "ES-220", "GSWS-312","MUS-205",
+                                         "BI-468", "CCJ-231", "COMM-200", "GSWS-222", "MUS-206"],
+    "Inquiry and Analysis": ["GSWS-300", "ES-200", "ENG-280", "BI-101", "COMM-482",
+                             "ARTH-346", "BA-483", "DCIN-201", "DCIN-362", "EMDA-250"],
+    "Numerical Literacy": ["CS-200", "MTH-111", "CS-346", "STAT-243Z", "BA-218", "CS-346", "ES-101", "MTH-212"],
+    "Purposeful Learning": ["WR-121Z","WR-122Z", "WR-123"] # oh thats literally all the PL classes
     }
     # define a 'transcript' tuple with messy course strings, including:
         # im just gonna make them all worth 5 credits for ease of testing. and i dont feel like looking up the class names rn
