@@ -10,14 +10,19 @@ def parse_course_record(course_string):
     '''
 
     # break string into a list 'tokens' with the .split method (delimiter: ',')
-    # using a for loop, clean up each item in tokens with .strip and .capitalize * (make sure to reassign!)
-        # standardizing as "capitalize" is best here - course names aren't used or compared & so don't matter
+    tokens = course_string.split(',')
+    # using a for loop, clean up each item in tokens with .strip and .upper (make sure to reassign!)
+        # make sure to also capitalize the Zs in the course codes in gen_ed_categories
+    for i in range(len(tokens)):
+        tokens[i] = tokens[i].strip().upper()
     # convert credits (tokens[2]) into an integer
+    tokens[2] = int(tokens[2])
     # create dictionary 'course' with keys 'code', 'name', 'credit', and 'status'
         # assign the contents of tokens as values, in index order (so 'code':[0], 'name':[1], etc)
+    course = {'code':tokens[0], 'name':tokens[1], 'credit':tokens[2], 'status':tokens[3]}
     # return course
-    # testing detailed in main
-    pass
+    return course
+# testing detailed in main
 
 
 #   # STEP 2
@@ -119,11 +124,11 @@ def main():
     #   # Step 1 Testing
     # using the sample transcript from the doc
     # call parse_course_record() and print the result using each of the strings below as the argument:
-    # print(parse_course_record("    MTH-111, Pre-calculus, 4, COMPLETED    "))
-    # print(parse_course_record("  WR-121z, Composition I, 3, Completed   "))
-    # print(parse_course_record("  WR-122z,  Composition II, 3, Incomplete   "))
-    # print(parse_course_record("     GSWS-210, Violence Prevention, 4, completed"))
-    # do i need to list expected outcomes for this? expected outcomes are just "the string but a dict now, and cleaner"
+    print(parse_course_record("    MTH-111, Pre-calculus, 4, COMPLETED    "))
+    print(parse_course_record("  WR-121z, Composition I, 3, Completed   "))
+    print(parse_course_record("  WR-122z,  Composition II, 3, Incomplete   "))
+    print(parse_course_record("     GSWS-210, Violence Prevention, 4, completed"))
+    # decided to write out expected outcomes in the doc instead of the code
 
 
     #   # Step 2 Testing
@@ -187,4 +192,7 @@ def main():
         # print(student_final_bins) to check that it worked right
     # call audit_credits(student_final_bins) and store the result in a variable
         # print that variable to check on it
-pass
+
+print()
+main()
+print()
