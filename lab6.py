@@ -39,14 +39,14 @@ def get_gen_ed_category(course_code, gen_ed_mapping):
       category (str)
     '''
 
-    # have to initialize category
+    # initialize category
     category = ""
     # write a for loop to iterate through the gen_ed_mapping keys
     for key in gen_ed_mapping:
         # if the course_code is in the values of a key, assign 'category' with that key
         if course_code in gen_ed_mapping[key]:
             category = key
-    #if category is still unassigned, assign "uncategorized"
+    # if category is still unassigned, assign "uncategorized"
     if category == "":
         category = 'Uncategorized'
     
@@ -68,7 +68,7 @@ def audit_credits(student_bins):
     '''
     # this docstring is a direct copy of the example in the 11/17 slides. i liked it a lot so im using it as a framework
 
-    # initialize dict 'totals' with all category keys plus 'UNCATEGORIZED', all with value 0 for now
+    # initialize dict 'totals' with all category keys plus 'Uncategorized', all with value 0 for now
     totals = {
     "Creativity and Innovation": 0,
     "Communication and Expression": 0,
@@ -79,11 +79,13 @@ def audit_credits(student_bins):
     "Uncategorized": 0
     }
     # nested for loops: outer loop goes through 'key in student_bin'
-        # inner loop goes through 'class in student_bin[key]' (to access the tuples)
-        # increment credit_totals[key] by class[1] (totals and student_bin have matching key sets)
-    # return totals
-    # testing detailed in main
-    pass
+    for key in student_bins:
+        # inner loop goes through 'cource in student_bin[key]' (to access the tuples)
+        for course in student_bins[key]:
+            # increment totals[key] by course[1] (totals and student_bin have matching key sets)
+            totals[key] += course[1]
+    return totals
+# testing detailed in main
 
 
 #   # STEP 4
@@ -141,23 +143,23 @@ def main():
     #   # Step 2 Testing
     # mapping dictionary from the doc is initialized at the top of main
     # hard-code some test values from the sample transcript, plus one that isn't in the dictionary
-    test_values = ['MTH-111', 'WR-121Z', 'WR-122Z', 'GSWS-210', 'MUS-101']
-    for code in test_values: # much faster way to test each variable
-        print(get_gen_ed_category(code, sample_categories))
+    # test_values = ['MTH-111', 'WR-121Z', 'WR-122Z', 'GSWS-210', 'MUS-101']
+    # for code in test_values: # much faster way to test each variable
+    #     print(get_gen_ed_category(code, sample_categories))
     # expected results, in order: Numerical Literacy, Purposeful Learning, PL again, Creativity+Innovation, Uncategorized
 
 
     #   # Step 3 Testing
-    # student_bins = { # hard-coded sample, pared down from the sample category dict
-    # "CREATIVITY AND INNOVATION": [("ART-133", 2), ("MUS-330", 4)],
-    # "COMMUNICATION AND EXPRESSION": [("ARTH-204", 3)],
-    # "EQUITY, DIVERSITY, AND INCLUSION": [("GSWS-312", 4)],
-    # "INQUIRY AND ANALYSIS": [("ENG-280", 2), ("COMM-482", 4)],
-    # "NUMERICAL LITERACY": [("CS-200", 4), ("CS-346", 4)],
-    # "PURPOSEFUL LEARNING": [("WR-121Z", 4)],
-    # "UNCATEGORIZED": [("CS-210", 2)]
-    # }
-    # call audit_credits(student_bins)
+    student_bins = { # hard-coded sample, pared down from the sample category dict
+    "Creativity and Innovation": [("ART-133", 2), ("MUS-330", 4)],
+    "Communication and Expression": [("ARTH-204", 3)],
+    "Equity, Diversity, and Inclusion": [("GSWS-312", 4)],
+    "Inquiry and Analysis": [("ENG-280", 2), ("COMM-482", 4)],
+    "Numerical Literacy": [("CS-200", 4), ("CS-346", 4)],
+    "Purposeful Learning": [("WR-121Z", 4)],
+    "Uncategorized": [("CS-210", 2)]
+    }
+    print(audit_credits(student_bins))
     # expected results: CI:6, CE:3, EDI:4, IA:6, NL:8, PL:4, UC:2
 
 
