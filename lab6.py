@@ -105,13 +105,26 @@ def bin_student_courses(transcript, gen_ed_mapping):
     '''
 
     # initialize dictionary 'bins' with empty lists for all categories + "UNCATEGORIZED"
+    bins = {
+        "Creativity and Innovation": [],
+        "Communication and Expression": [],
+        "Equity, Diversity, and Inclusion": [],
+        "Inquiry and Analysis": [],
+        "Numerical Literacy": [],
+        "Purposeful Learning": [],
+        "Uncategorized": []
+    }
     # loop over transcript - for course in transcript:
+    for course in transcript:
         # call parse_course_records(course), assign to 'record'
+        record = parse_course_record(course)
         # call get_gen_ed_category(record[code], gen_ed_mapping), assign to 'category'
+        category = get_gen_ed_category(record['code'], gen_ed_mapping)
         # if record['status'] == 'COMPLETED', append (record['code'], record['credits']) tuple to bins[category]
-    # return bins
-    # testing detailed in main
-    pass
+        if record['status'] == 'COMPLETED':
+            bins[category].append((record['code'], record['credit']))
+    return bins
+# testing detailed in main
 
 
 # step 5 is below in main()
@@ -150,27 +163,39 @@ def main():
 
 
     #   # Step 3 Testing
-    student_bins = { # hard-coded sample, pared down from the sample category dict
-    "Creativity and Innovation": [("ART-133", 2), ("MUS-330", 4)],
-    "Communication and Expression": [("ARTH-204", 3)],
-    "Equity, Diversity, and Inclusion": [("GSWS-312", 4)],
-    "Inquiry and Analysis": [("ENG-280", 2), ("COMM-482", 4)],
-    "Numerical Literacy": [("CS-200", 4), ("CS-346", 4)],
-    "Purposeful Learning": [("WR-121Z", 4)],
-    "Uncategorized": [("CS-210", 2)]
-    }
-    print(audit_credits(student_bins))
+    # student_bins = { # hard-coded sample, pared down from the sample category dict
+    # "Creativity and Innovation": [("ART-133", 2), ("MUS-330", 4)],
+    # "Communication and Expression": [("ARTH-204", 3)],
+    # "Equity, Diversity, and Inclusion": [("GSWS-312", 4)],
+    # "Inquiry and Analysis": [("ENG-280", 2), ("COMM-482", 4)],
+    # "Numerical Literacy": [("CS-200", 4), ("CS-346", 4)],
+    # "Purposeful Learning": [("WR-121Z", 4)],
+    # "Uncategorized": [("CS-210", 2)]
+    # }
+    # print(audit_credits(student_bins))
     # expected results: CI:6, CE:3, EDI:4, IA:6, NL:8, PL:4, UC:2
 
 
     #   # Step 4 Testing
     # define a sample transcript, 2 courses
-    # sample_transcript = [("ART-291", 4), ("ES-200", 2)]
-    # call bin_student_courses(sample_transcript, sample_categories) and print the result
+    # sample_transcript = (("    MTH-111, Pre-calculus, 4, COMPLETED    ", "  WR-121z, Composition I, 3, Completed   "))
+    # # call bin_student_courses(sample_transcript, sample_categories) and print the result
+    # test_result = bin_student_courses(sample_transcript, sample_categories)
+    # for line in test_result:
+    #     print(f"{line} -- {test_result[line]}") # should put every key-value pair on its own line i think?)
     # expected results: {CI: (ART-291, 4), EDI:("ES-200", 2), other cats empty}
+
     # then add more courses and call again:
-    # sample_transcript [("ART-291", 4), ("ES-200", 2), ("ARTH-204", 4), ("CS-200", 2), ("ENG-214", 4), ("ENG-105", 2), ("BI-101", 2), ("WR-123", 4)]
-    # ill just check this one against the dictionary when i run it, im too zapped to do it now
+    sample_transcript = ("    MTH-111, Pre-calculus, 4, COMPLETED    ",
+                         "  WR-123, Composition III, 4, Completed   ",
+                         " Art-291 ,   Introduction to Sculpture, 4, completed",
+                         "BI-468, Ethnobotany, 4, COMPLETED",
+                         "  eng-106z, Introduction to poetry  , 4, incomplete",
+                         "Mus-101, Intro to Music?, 2, completed"
+                         )
+    test_result = bin_student_courses(sample_transcript, sample_categories)
+    for line in test_result:
+        print(f"{line} -- {test_result[line]}")
 
 
     #   # STEP 5: Final Pipeline Integration & Testing
