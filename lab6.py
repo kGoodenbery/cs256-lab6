@@ -186,16 +186,16 @@ def main():
     # expected results: {CI: (ART-291, 4), EDI:("ES-200", 2), other cats empty}
 
     # then add more courses and call again:
-    sample_transcript = ("    MTH-111, Pre-calculus, 4, COMPLETED    ",
-                         "  WR-123, Composition III, 4, Completed   ",
-                         " Art-291 ,   Introduction to Sculpture, 4, completed",
-                         "BI-468, Ethnobotany, 4, COMPLETED",
-                         "  eng-106z, Introduction to poetry  , 4, incomplete",
-                         "Mus-101, Intro to Music?, 2, completed"
-                         )
-    test_result = bin_student_courses(sample_transcript, sample_categories)
-    for line in test_result:
-        print(f"{line} -- {test_result[line]}")
+    # sample_transcript = ("    MTH-111, Pre-calculus, 4, COMPLETED    ",
+    #                      "  WR-123, Composition III, 4, Completed   ",
+    #                      " Art-291 ,   Introduction to Sculpture, 4, completed",
+    #                      "BI-468, Ethnobotany, 4, COMPLETED",
+    #                      "  eng-106z, Introduction to poetry  , 4, incomplete",
+    #                      "Mus-101, Intro to Music?, 2, completed"
+    #                      )
+    # test_result = bin_student_courses(sample_transcript, sample_categories)
+    # for line in test_result:
+    #     print(f"{line} -- {test_result[line]}")
 
 
     #   # STEP 5: Final Pipeline Integration & Testing
@@ -212,20 +212,30 @@ def main():
     "Numerical Literacy": ["CS-200", "MTH-111", "CS-346", "STAT-243Z", "BA-218", "CS-346", "ES-101", "MTH-212"],
     "Purposeful Learning": ["WR-121Z","WR-122Z", "WR-123"] # oh thats literally all the PL classes
     }
-    # define a 'transcript' tuple with messy course strings, including:
-        # im just gonna make them all worth 5 credits for ease of testing. and i dont feel like looking up the class names rn
-        # lmk if you want me to test it with actual names when i write the code but imma just name em by their category
+    # define a 'transcript' tuple with messy course strings
+    # im leaving them all named after their categories instead of giving them real course names.
+        # the name doesnt make it out of bin_courses anyway, and this makes totalling expected outcomes faster
     
-    transcript = (" ART-133, creativity+innovation 1, 4, completed", "eng-105,  creativity+innovation 2, 4, incomplete",
-                  "   BI-130, comm+expression 1, 4, Completed    ", "  ES-220, equ+div+incl 1,  4, completed  ",
-                  "CS-200, numerical literacy 1  , 4, cOMPLETED ", "   DCIN-201, inquiry+analysis 1, 4, COMPLETED",
-                  "WR-121z, purposeful learning 1, 4, Completed", "WR-121Z, purposeful learning 2, 4, comPLETed",
-                  "Fake-101, UC, 5, complete") # okay thats one per category plus one that isnt, 2 in PL, and an incomplete in CI
+    transcript = (" ART-133, creativity+innovation 1, 4, completed", "eng-105,  creativity+innovation II, 4, incomplete",
+                  "   BI-130, comm+expression I, 4, Completed    ",  "  ES-220, equ+div+incl I,  4, completed  ",
+                  "CS-200, numerical literacy I  , 4, cOMPLETED ",   "   DCIN-201, inquiry+analysis I, 4, COMPLETED",
+                  "WR-121z, Purposeful Learning I, 4, Completed",    "WR-122Z, purposeful learning II, 4, comPLETed",
+                  "Mus-101, Uncategorized I, 3, completed")
+    # okay thats one per category plus one that isnt, 2 in PL, and an incomplete in CI
     
-    # call bin_student_courses(trancript, gen_ed_categories) and store the result in student_final_bins
-        # print(student_final_bins) to check that it worked right
-    # call audit_credits(student_final_bins) and store the result in a variable
-        # print that variable to check on it
+    # call bin_student_courses(trancript, extended_categories) and store the result in final_bins
+    final_bins = bin_student_courses(transcript, extended_categories)
+    # print(final_bins) to check that it worked right
+    for key in final_bins:
+        print(f"{key:33}: {final_bins[key]}")
+
+    print() # spacer
+
+    # call audit_credits(final_bins) and store the result in a variable
+    final_credits = audit_credits(final_bins)
+    # print that variable to check on it
+    for key in final_credits:
+        print(f"{key:33}: {final_credits[key]}")
 
 print()
 main()
